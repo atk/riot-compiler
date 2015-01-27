@@ -6,15 +6,15 @@ riot.compile = function(tags) {
             // 3: JS, non-greedy match for everything without opening or closing tags
             // 4: closing of initial tag
 
-        // make sure IE can use the tag
+        // make sure IE can use the tag - you can remove this line if IE8 is no concern or you already added the tag
         document.createElement(tag)
 
         // register in riot
         var level = 0
         riot.tag(tag, 
             // html attributes without quotes need to be quoted, self-contained attributes "escaped" with __
-            html.replace(/(\S+=)(\{.*?\})(\s|>)/g, function(full, attr, val, rest) {
-                return (/^(allowfullscreen|async|autofocus|autoplay|checked|compact|controls|declare|default(|checked|muted|selected)|defer|disabled|draggable|enabled|formnovalidate|hidden|indeterminate|inert|ismap|itemscope|loop|multiple|muted|nohref|noresize|noshade|novalidate|nowrap|open|pauseonexit|readonly|required|reversed|scoped|seamless|selected|sortable|spellcheck|translate|truespeed|typemustmatch|visible)=$/i.test(attr) ?
+            html.replace(/((?!\S+=["'])\S+=)'?(\{.*?\})'?(\s|>)/g, function(full, attr, val, rest) {
+                return (/^(allowfullscreen|async|auto(focus|play)|checked|compact|controls|declare|default(|checked|muted|selected)|defer|(dis|en)abled|draggable|formnovalidate|hidden|indeterminate|inert|ismap|itemscope|loop|multiple|muted|no(href|resize|shade|validate|wrap)|open|pauseonexit|readonly|required|reversed|scoped|seamless|selected|sortable|spellcheck|translate|truespeed|typemustmatch|visible)=$/i.test(attr) ?
                     '__' : '') + attr + '"' + val + '"' + rest
             }),
             // fn needs to be parsed so the methods can be detected and correctly prefixed/suffixed
